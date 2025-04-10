@@ -1,0 +1,2 @@
+# SafeClick
+antiphishing google extention
