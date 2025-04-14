@@ -1,3 +1,4 @@
+//..
 chrome.webNavigation.onCompleted.addListener((details) => {
     let url = new URL(details.url);
     checkUrlSafety(url.href);
