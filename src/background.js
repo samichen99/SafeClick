@@ -1,9 +1,9 @@
-//..
+//.la base de l'extention
 chrome.webNavigation.onCompleted.addListener((details) => {
     let url = new URL(details.url);
     checkUrlSafety(url.href);
 });
-
+//..la fonction primaire de l'extention 
 function checkUrlSafety(url) {
     fetch(`https://safebrowsing.googleapis.com/v4/threatMatches:find?key=AIzaSyBIxikndngGPM6o7jB3qRnQahf_IU5m_tM`, {
         method: "POST",
