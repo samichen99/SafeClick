@@ -15,12 +15,15 @@ document.addEventListener("DOMContentLoaded", function () {
     if (sites.length === 0) {
       const li = document.createElement("li");
       li.textContent = "Aucun site bloqué pour le moment.";
-      li.style.fontStyle = "italic";
+      li.style.fontStyle = "Segoe UI";
+      li.style.fontWeight = "bold";
+      li.style.color = "#327dd8"; 
       blockedSitesList.appendChild(li);
     } else {
       sites.forEach(addSiteToList);
     }
   }
+  
 
   
   chrome.storage.local.get("blockedSites", function (data) {
