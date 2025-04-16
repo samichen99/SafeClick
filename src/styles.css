@@ -1,18 +1,18 @@
-.popup-wrapper {
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   width: 320px;
   padding: 20px;
   background: linear-gradient(to bottom right, rgb(183, 225, 255), #a1e4fa, #24b6f5);
-  color: #e0f7fa;
-  border-radius: 20px;
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+  color: #e0f7fa; 
+  box-shadow: none;
   box-sizing: border-box;
   overflow: hidden;
   animation: fadeIn 0.6s ease-in-out;
+  display: flex;
   flex-direction: column;
   gap: 16px;
- 
+  border-radius: 0;
 }
-
 
 @keyframes fadeIn {
   from { opacity: 0; transform: translateY(10px); }
@@ -36,7 +36,7 @@
 h2 {
   font-size: 15px;
   margin: 0;
-  color: #b2ebf2;
+  color: #327dd8;
 }
 
 .protect-btn {
@@ -75,7 +75,8 @@ input[type="text"] {
 .report-btn {
   padding: 6px 10px;
   font-size: 13px;
-  background: linear-gradient(to right, #1de9b6, #03c0eb);
+  font-weight: bold;
+  background: linear-gradient(to right, #00c6ff, #327dd8);
   color: white;
   border: none;
   border-radius: 6px;
