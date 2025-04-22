@@ -32,10 +32,16 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 
   protectBtn.addEventListener("click", function () {
-    protectBtn.textContent = "Protection active ✅";
-    protectBtn.disabled = true;
-    protectBtn.style.background = "#00c853";
-    protectBtn.style.cursor = "default";
+    if( protectBtn.textContent === "Protection active ✅" ) {
+      protectBtn.textContent = "Activer la protection";
+      protectBtn.style.background = 'linear-gradient(to right, #00c6ff, #327dd8)';
+      protectBtn.style.cursor = "pointer";
+
+    } else {
+      protectBtn.textContent = "Protection active ✅";
+      protectBtn.style.background = "#00c853";
+      protectBtn.style.cursor = "default";
+    }
   });
 
 
