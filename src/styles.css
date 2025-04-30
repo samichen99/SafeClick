@@ -101,3 +101,83 @@ ul li {
   margin-bottom: 4px;
   animation: fadeIn 0.5s ease;
 }
+.toggle-container {
+  margin-top: 20px;
+  display: flex;
+  justify-content: center;
+}
+
+.switch-label {
+  background: rgba(0, 105, 190, 0.2);
+  color: white;
+  padding: 10px 15px;
+  border-radius: 12px;
+  font-size: 14px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 40px;
+  height: 22px;
+  margin-left: 10px;
+}
+
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  background-color: #ccc;
+  transition: .4s;
+  border-radius: 34px;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 16px;
+  width: 16px;
+  left: 4px;
+  bottom: 3px;
+  background-color: white;
+  transition: .4s;
+  border-radius: 50%;
+}
+
+input:checked + .slider {
+  background-color: #007ee6;
+}
+
+input:checked + .slider:before {
+  transform: translateX(18px);
+}
+#adBlockCountDisplay {
+  margin-top: 12px;
+  padding: 10px 15px;
+  background: linear-gradient(135deg, #007ee6, #00c6ff);
+  color: white;
+  font-size: 15px;
+  font-weight: bold;
+  border-radius: 10px;
+  text-align: center;
+  box-shadow: 0 4px 12px rgba(0, 126, 230, 0.3);
+  transition: transform 0.2s ease;
+}
+
+#adBlockCountDisplay:hover {
+  transform: scale(1.03);
+  box-shadow: 0 6px 14px rgba(0, 126, 230, 0.4);
+}
