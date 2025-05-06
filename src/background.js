@@ -1,40 +1,52 @@
-//.la base de l'extention
+// === Base Functionality ===
 chrome.webNavigation.onCompleted.addListener((details) => {
   let url = new URL(details.url);
   checkUrlSafety(url.href);
 });
-//..la fonction primaire de l'extention 
+
+// === Check URL against Google Safe Browsing ===
 function checkUrlSafety(url) {
-  fetch(`https://safebrowsing.googleapis.com/v4/threatMatches:find?key=AIzaSyBIxikndngGPM6o7jB3qRnQahf_IU5m_tM`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-          client: {
-              clientId: "SafeClick",
-              clientVersion: "0.1"
-          },
-          threatInfo: {
-              threatTypes: ["MALWARE", "SOCIAL_ENGINEERING"],
-              platformTypes: ["ANY_PLATFORM"],
-              threatEntryTypes: ["URL"],
-              threatEntries: [{ url: url }]
-          }
-      })
+  fetch(`https://safebrowsing.googleapis.com/v4/threatMatches:find?key=YOUR_API_KEY_HERE`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      client: {
+        clientId: "SafeClick",
+        clientVersion: "0.1"
+      },
+      threatInfo: {
+        threatTypes: ["MALWARE", "SOCIAL_ENGINEERING"],
+        platformTypes: ["ANY_PLATFORM"],
+        threatEntryTypes: ["URL"],
+        threatEntries: [{ url: url }]
+      }
+    })
   })
   .then(response => response.json())
   .then(data => {
-      if (data.matches) {
-          chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
-              chrome.tabs.sendMessage(tabs[0].id, {
-                  type: "PHISHING_WARNING",
-                  url: url
-              });
-          });
-  }
-})
+    if (data.matches) {
+     
+      chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
+        chrome.tabs.sendMessage(tabs[0].id, {
+          type: "PHISHING_WARNING",
+          url: url,
+          threatInfo: data.matches[0] 
+        });
+      });
+    } else {
+      // No threat found, notify content script safely
+      chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
+        chrome.tabs.sendMessage(tabs[0].id, {
+          type: "NO_THREAT",
+          url: url
+        });
+      });
+    }
+  })
   .catch(error => console.error("Error checking URL safety:", error));
 }
 
+// === Ad Blocker Counter & Toggle ===
 let adBlockCount = 0;
 
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
@@ -45,11 +57,14 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     });
   } else if (message.type === "GET_ADBLOCK_COUNTER") {
     sendResponse({ count: adBlockCount });
+  } else if (message.type === "GET_THREAT_INFO") {
+    
+    sendResponse({ url: lastCheckedUrl, threatInfo: lastThreatInfo });
   }
   return true;
 });
 
-// Use onRuleMatchedDebug to count blocked ads
+// === Count matched rules (for ads) ===
 chrome.declarativeNetRequest.onRuleMatchedDebug.addListener((info) => {
   if (info.rule.ruleId >= 1) {
     adBlockCount++;
