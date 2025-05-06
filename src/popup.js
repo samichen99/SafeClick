@@ -6,6 +6,9 @@ document.addEventListener("DOMContentLoaded", function () {
   const adBlockToggle = document.getElementById("toggleAdBlock");
   const adCountDisplay = document.getElementById("adBlockCountDisplay");
 
+  // Initialize counter display
+  adCountDisplay.textContent = "Ads bloquées: 0";
+
   function addSiteToList(site) {
     const li = document.createElement("li");
     li.textContent = site;
@@ -31,7 +34,6 @@ document.addEventListener("DOMContentLoaded", function () {
     updateListUI(sites);
   });
 
-  // Sync UI with current state
   chrome.storage.local.get(["adBlockEnabled"], function (data) {
     const enabled = data.adBlockEnabled || false;
     adBlockToggle.checked = enabled;
@@ -81,20 +83,31 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   });
 
-  // Update counter display
+  // Enhanced counter functionality
   function updateCounterDisplay(count) {
     adCountDisplay.textContent = `Ads bloquées: ${count}`;
+    // Visual feedback when counter updates
+    adCountDisplay.classList.add('counter-update');
+    setTimeout(() => {
+      adCountDisplay.classList.remove('counter-update');
+    }, 300);
   }
 
-  // Initial counter update
-  chrome.runtime.sendMessage({ type: "GET_ADBLOCK_COUNTER" }, function (res) {
-    updateCounterDisplay(res.count);
-  });
-
-  // Listen for counter updates
+  // Message listener for counter updates
   chrome.runtime.onMessage.addListener((message) => {
     if (message.type === "UPDATE_ADBLOCK_COUNTER") {
       updateCounterDisplay(message.count);
     }
+    return true;
   });
+
+  // Get initial count when popup opens
+  chrome.runtime.sendMessage(
+    { type: "GET_ADBLOCK_COUNTER" },
+    (response) => {
+      if (response && typeof response.count !== "undefined") {
+        updateCounterDisplay(response.count);
+      }
+    }
+  );
 });
