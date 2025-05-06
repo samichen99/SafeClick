@@ -29,11 +29,13 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   }
 
-  chrome.storage.local.get("blockedSites", function (data) {
+  // Retrieve blocked sites from storage and update UI
+  chrome.storage.local.get(["blockedSites"], function (data) {
     const sites = data.blockedSites || [];
     updateListUI(sites);
   });
 
+  // Retrieve adblock state and update UI
   chrome.storage.local.get(["adBlockEnabled"], function (data) {
     const enabled = data.adBlockEnabled || false;
     adBlockToggle.checked = enabled;
@@ -42,6 +44,7 @@ document.addEventListener("DOMContentLoaded", function () {
     protectBtn.style.cursor = enabled ? "default" : "pointer";
   });
 
+  // Toggle protection status on button click
   protectBtn.addEventListener("click", function () {
     const isActive = protectBtn.textContent === "Protection active ✅";
     const newState = !isActive;
@@ -55,6 +58,7 @@ document.addEventListener("DOMContentLoaded", function () {
     chrome.runtime.sendMessage({ type: "TOGGLE_ADBLOCK", enabled: newState });
   });
 
+  // Toggle adblock state on checkbox change
   adBlockToggle.addEventListener("change", function () {
     const enabled = adBlockToggle.checked;
     chrome.storage.local.set({ adBlockEnabled: enabled });
@@ -65,10 +69,11 @@ document.addEventListener("DOMContentLoaded", function () {
     protectBtn.style.cursor = enabled ? "default" : "pointer";
   });
 
+  // Report a site and add it to the blocked sites list
   reportBtn.addEventListener("click", function () {
     const site = siteInput.value.trim().toLowerCase();
     if (site) {
-      chrome.storage.local.get("blockedSites", function (data) {
+      chrome.storage.local.get(["blockedSites"], function (data) {
         let sites = data.blockedSites || [];
         if (!sites.includes(site)) {
           sites.push(site);
@@ -110,4 +115,45 @@ document.addEventListener("DOMContentLoaded", function () {
       }
     }
   );
+
+  // === Details Button ===
+  const loadDetailsBtn = document.getElementById("loadDetailsBtn");
+  const detailsDropdown = document.getElementById("detailsDropdown");
+  const urlDisplay = document.getElementById("checkedUrl");
+  const threatTypeDisplay = document.getElementById("threatType");
+  const platformDisplay = document.getElementById("platformType");
+  const statusDisplay = document.getElementById("threatStatus");
+  const threatDetailBox = document.getElementById("threatDetails");
+
+  loadDetailsBtn.addEventListener("click", function () {
+    chrome.runtime.sendMessage({ type: "GET_THREAT_INFO" }, function (response) {
+      if (response && response.url) {
+        urlDisplay.textContent = response.url;
+
+        if (response.threatInfo) {
+          threatTypeDisplay.textContent = response.threatInfo.threatType || "inconnu";
+          platformDisplay.textContent = response.threatInfo.platformType || "inconnu";
+          statusDisplay.textContent = "🚨 Menace détectée !";
+          statusDisplay.style.color = "red";
+          threatDetailBox.style.color = "red";
+        } else {
+          threatTypeDisplay.textContent = "-";
+          platformDisplay.textContent = "-";
+          statusDisplay.textContent = "✅ Aucun problème détecté.";
+          statusDisplay.style.color = "green";
+          threatDetailBox.style.color = "green";
+        }
+
+        detailsDropdown.style.display = "block";
+      } else {
+        urlDisplay.textContent = "-";
+        threatTypeDisplay.textContent = "-";
+        platformDisplay.textContent = "-";
+        statusDisplay.textContent = "⚠️ Erreur lors du chargement.";
+        statusDisplay.style.color = "orange";
+        threatDetailBox.style.color = "orange";
+        detailsDropdown.style.display = "block";
+      }
+    });
+  });
 });
