@@ -1,2 +1,2 @@
 # SafeClick
-antiphishing google extention
+cybersecurity google extention
