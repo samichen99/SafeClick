@@ -3,7 +3,15 @@
     "name": "SafeClick",
     "version": "1.0.0",
     "description": "Extension pour détecter et bloquer les sites de phishing",
-    "permissions": ["storage", "activeTab", "webNavigation", "declarativeNetRequest", "declarativeNetRequestWithHostAccess"],
+    "permissions": [  
+    "storage",
+    "activeTab",
+    "webNavigation",
+    "declarativeNetRequest",
+    "declarativeNetRequestWithHostAccess",
+    "webRequest",
+    "declarativeNetRequestFeedback"],
+    
     "host_permissions": ["<all_urls>"],
 
     "background": {
