@@ -24,6 +24,27 @@ function displayPhishingBanner(url) {
 
     document.body.prepend(banner);
 }
+ function displayThreatInfo (info){
+    const statusDiv = document.getElementById("threatStatus");
+    if(!statusDiv) return;
+    
+    if(info && threatInfo) {
+        statusDiv.innerHTML = `
+        <div style=" red ;font-weight= bold;">
+            Ce site est dangereux !
+        </div>;
+        <div >
+            <strong>Type de Menace :</strong> ${info.threatInfo.ThreatType}
+        </div>`;  
+    }
+    else if(info && threatInfo) {
+        statusDiv.innerHTML = `
+        <div style=" color:green; font-weight: bold> Aucune Menace est Detecté
+        </div>
+        <div><strong> URL Verifiée :</strong> ${info.url} </div>
+        `
+    }
+ }
 
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     if (message.type === "PHISHING_WARNING") {
