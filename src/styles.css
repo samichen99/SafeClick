@@ -3,13 +3,15 @@ body {
   width: 320px;
   padding: 20px;
   background: linear-gradient(to bottom right, rgb(183, 225, 255), #a1e4fa, #24b6f5);
-  color: #e0f7fa;
+  color: #e0f7fa; 
+  box-shadow: none;
   box-sizing: border-box;
   overflow: hidden;
   animation: fadeIn 0.6s ease-in-out;
   display: flex;
   flex-direction: column;
   gap: 16px;
+  border-radius: 0;
 }
 
 @keyframes fadeIn {
@@ -26,24 +28,16 @@ body {
 .logo {
   max-width: 130px;
   display: block;
-  margin: 0 auto 10px;
+  margin: 0 auto 20px;
 }
 
 h2 {
-  font-size: 15px;
+  font-size: 12px;
   margin: 0;
   color: #327dd8;
-  text-align: center;
 }
 
-/* ========================= */
-/* ==== Buttons Unified ==== */
-/* ========================= */
-
-button,
-.protect-btn,
-.report-btn,
-#loadDetailsBtn {
+.protect-btn {
   padding: 12px;
   font-size: 14px;
   font-weight: bold;
@@ -53,22 +47,69 @@ button,
   color: white;
   cursor: pointer;
   transition: transform 0.3s, box-shadow 0.3s;
-  width: 100%;
 }
 
-button:hover,
-.protect-btn:hover,
-.report-btn:hover,
-#loadDetailsBtn:hover {
+.protect-btn:hover {
   transform: scale(1.05);
   box-shadow: 0 0 10px #00c6ff;
 }
 
-/* ========================= */
-/* ==== Toggle Section ==== */
-/* ========================= */
+#blockedSites:empty {
+  margin: 0;
+  padding: 0;
+  height: 0;
+}
 
+/* .report-btn {
+  padding: 6px 10px;
+  font-size: 13px;
+  font-weight: bold;
+  background: linear-gradient(to right, #00c6ff, #327dd8);
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: transform 0.2s;
+  margin-bottom: 8px;
+}
+
+
+.report-btn:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 8px #1de9b6;
+} */
+
+.report-btn {
+  padding: 12px;
+  font-size: 14px;
+  font-weight: bold;
+  border: none;
+  border-radius: 12px;
+  background: linear-gradient(to right, #00c6ff, #327dd8);
+  color: white;
+  cursor: pointer;
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.report-btn:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 10px #00c6ff;
+}
+
+ul {
+  padding-left: 18px;
+  font-size: 13px;
+  color: #e0f2f1;
+  max-height: 100px;
+  overflow-y: auto;
+}
+
+ul li {
+  margin-bottom: 4px;
+  animation: fadeIn 0.5s ease;
+}
 .toggle-container {
+  margin-top: 0px;
   display: flex;
   justify-content: center;
 }
@@ -130,11 +171,6 @@ input:checked + .slider {
 input:checked + .slider:before {
   transform: translateX(18px);
 }
-
-/* ========================= */
-/* === Counter Display ==== */
-/* ========================= */
-
 #adBlockCountDisplay {
   margin-top: 12px;
   padding: 10px 15px;
@@ -148,26 +184,77 @@ input:checked + .slider:before {
   transition: transform 0.2s ease;
 }
 
+
+
 #adBlockCountDisplay:hover {
   transform: scale(1.03);
   box-shadow: 0 6px 14px rgba(0, 126, 230, 0.4);
 }
-
-/* ========================= */
-/* ==== Threat Section ===== */
-/* ========================= */
-
-#detailsDropdown {
-  display: none;
-  background-color: rgba(255, 255, 255, 0.1);
-  padding: 12px;
-  border-radius: 10px;
-  font-size: 13px;
+#loadDetailsBtn{
+  margin-top: 12px;
+  padding: 10px 15px;
+  background: linear-gradient(135deg, #007ee6, #00c6ff);
   color: white;
-  line-height: 1.5;
+  font-size: 15px;
+  font-weight: bold;
+  border-radius: 10px;
+  text-align: center;
+  margin-left: 70px;
+  border: none;
+  box-shadow: 0 4px 12px rgba(0, 126, 230, 0.3);
+  transition: transform 0.2s ease;
+
+}
+#loadDetailsBtn:hover {
+  transform: scale(1.03);
+  box-shadow: 0 6px 14px rgba(0, 126, 230, 0.4);
+}
+.styled-details {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-size: 15px;
+  color: #0d47a1;
+  line-height: 1.8;
+  
+
 }
 
-#detailsDropdown span {
-  font-weight: bold;
-  color: #ffffff;
+.details-list {
+  list-style: none;
+  padding-left: 0;
+  margin: 0;
+  overflow: hidden;
+  max-height: 100px;
+  
+}
+
+.details-list li {
+  margin-bottom: 6px;
+  display: flex;
+  align-items: baseline;
+}
+
+
+.label {
+  font-weight: 600;
+  margin-right: 6px;
+  color: #1565c0;
+}
+
+.error-message {
+  margin-top: 10px;
+  color: #d32f2f;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+}
+
+.error-message::before {
+  content: "⚠️ ";
+  margin-right: 6px;
+}
+
+#checkedUrl, #threatType, #platformType {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
