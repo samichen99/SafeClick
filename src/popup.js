@@ -1,41 +1,13 @@
 document.addEventListener("DOMContentLoaded", function () {
   const protectBtn = document.querySelector(".protect-btn");
   const reportBtn = document.querySelector(".report-btn");
-  const siteInput = document.querySelector('input[type="text"]');
-  const blockedSitesList = document.getElementById("blockedSites");
   const adBlockToggle = document.getElementById("toggleAdBlock");
   const adCountDisplay = document.getElementById("adBlockCountDisplay");
 
   // Initialize counter display
   adCountDisplay.textContent = "Ads bloquées: 0";
 
-  function addSiteToList(site) {
-    const li = document.createElement("li");
-    li.textContent = site;
-    blockedSitesList.appendChild(li);
-  }
-
-  function updateListUI(sites) {
-    blockedSitesList.innerHTML = "";
-    if (sites.length === 0) {
-      const li = document.createElement("li");
-      li.textContent = "Aucun site bloqué pour le moment.";
-      li.style.fontFamily = "Segoe UI";
-      li.style.fontWeight = "bold";
-      li.style.color = "#327dd8";
-      blockedSitesList.appendChild(li);
-    } else {
-      sites.forEach(addSiteToList);
-    }
-  }
-
-  // Retrieve blocked sites from storage and update UI
-  chrome.storage.local.get(["blockedSites"], function (data) {
-    const sites = data.blockedSites || [];
-    updateListUI(sites);
-  });
-
-  // Retrieve adblock state and update UI
+  // === Protection button state ===
   chrome.storage.local.get(["adBlockEnabled"], function (data) {
     const enabled = data.adBlockEnabled || false;
     adBlockToggle.checked = enabled;
@@ -44,7 +16,7 @@ document.addEventListener("DOMContentLoaded", function () {
     protectBtn.style.cursor = enabled ? "default" : "pointer";
   });
 
-  // Toggle protection status on button click
+  // === Toggle protection button===
   protectBtn.addEventListener("click", function () {
     const isActive = protectBtn.textContent === "Protection active ✅";
     const newState = !isActive;
@@ -58,7 +30,7 @@ document.addEventListener("DOMContentLoaded", function () {
     chrome.runtime.sendMessage({ type: "TOGGLE_ADBLOCK", enabled: newState });
   });
 
-  // Toggle adblock state on checkbox change
+  // === Toggle protection switch===
   adBlockToggle.addEventListener("change", function () {
     const enabled = adBlockToggle.checked;
     chrome.storage.local.set({ adBlockEnabled: enabled });
@@ -69,36 +41,16 @@ document.addEventListener("DOMContentLoaded", function () {
     protectBtn.style.cursor = enabled ? "default" : "pointer";
   });
 
-  // Report a site and add it to the blocked sites list
-  reportBtn.addEventListener("click", function () {
-    const site = siteInput.value.trim().toLowerCase();
-    if (site) {
-      chrome.storage.local.get(["blockedSites"], function (data) {
-        let sites = data.blockedSites || [];
-        if (!sites.includes(site)) {
-          sites.push(site);
-          chrome.storage.local.set({ blockedSites: sites }, function () {
-            updateListUI(sites);
-            siteInput.value = "";
-          });
-        } else {
-          alert("⚠️ Ce site est déjà signalé.");
-        }
-      });
-    }
-  });
+  // === Update ad counter ===
 
-  // Enhanced counter functionality
   function updateCounterDisplay(count) {
     adCountDisplay.textContent = `Ads bloquées: ${count}`;
-    // Visual feedback when counter updates
     adCountDisplay.classList.add('counter-update');
     setTimeout(() => {
       adCountDisplay.classList.remove('counter-update');
     }, 300);
   }
 
-  // Message listener for counter updates
   chrome.runtime.onMessage.addListener((message) => {
     if (message.type === "UPDATE_ADBLOCK_COUNTER") {
       updateCounterDisplay(message.count);
@@ -106,17 +58,43 @@ document.addEventListener("DOMContentLoaded", function () {
     return true;
   });
 
-  // Get initial count when popup opens
-  chrome.runtime.sendMessage(
-    { type: "GET_ADBLOCK_COUNTER" },
-    (response) => {
-      if (response && typeof response.count !== "undefined") {
-        updateCounterDisplay(response.count);
-      }
+  chrome.runtime.sendMessage({ type: "GET_ADBLOCK_COUNTER" }, (response) => {
+    if (response && typeof response.count !== "undefined") {
+      updateCounterDisplay(response.count);
     }
-  );
+  });
 
-  // === Details Button ===
+  // === Report function ===
+  function reportSuspiciousSite(url, reason = "User reported as suspicious") {
+    fetch("http://localhost:8080/report", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({ url: url, reason: reason })
+    })
+    .then(response => {
+      if (response.ok) {
+        alert("Site successfully reported!");
+      } else {
+        alert("Failed to report site.");
+      }
+    })
+    .catch(error => {
+      console.error("Error reporting site:", error);
+      alert("Error contacting the reporting server.");
+    });
+  }
+
+  reportBtn.addEventListener("click", () => {
+    chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
+      const url = tabs[0].url;
+      reportSuspiciousSite(url);
+    });
+  });
+
+  // === Threat detail ===
+
   const loadDetailsBtn = document.getElementById("loadDetailsBtn");
   const detailsDropdown = document.getElementById("detailsDropdown");
   const urlDisplay = document.getElementById("checkedUrl");
@@ -151,7 +129,7 @@ document.addEventListener("DOMContentLoaded", function () {
         platformDisplay.textContent = "-";
         statusDisplay.textContent = "⚠️ Erreur lors du chargement.";
         statusDisplay.style.color = "orange";
-        threatDetailBox.style.color = "orange";
+        threatDetailBox.style.color = "#327dd8";
         detailsDropdown.style.display = "block";
       }
     });
