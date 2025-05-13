@@ -21,7 +21,7 @@ function checkUrlSafety(url) {
                 clientVersion: "0.1"
             },
             threatInfo: {
-                threatTypes: ["MALWARE", "SOCIAL_ENGINEERING"],
+                threatTypes: ["MALWARE", "SOCIAL_ENGINEERING","UNWANTED_SOFTWARE", "POTENTIALLY_HARMFUL_APPLICATION"],
                 platformTypes: ["ANY_PLATFORM"],
                 threatEntryTypes: ["URL"],
                 threatEntries: [{ url: url }]
@@ -63,6 +63,7 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     return true;
 });
 
+
 // Compteur de publicités bloquées
 chrome.declarativeNetRequest.onRuleMatchedDebug.addListener((info) => {
     if (info.rule.ruleId >= 1) {
@@ -73,3 +74,4 @@ chrome.declarativeNetRequest.onRuleMatchedDebug.addListener((info) => {
         });
     }
 });
+
