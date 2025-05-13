@@ -95,16 +95,26 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // === Threat detail ===
 
-  const loadDetailsBtn = document.getElementById("loadDetailsBtn");
-  const detailsDropdown = document.getElementById("detailsDropdown");
-  const urlDisplay = document.getElementById("checkedUrl");
-  const threatTypeDisplay = document.getElementById("threatType");
-  const platformDisplay = document.getElementById("platformType");
-  const statusDisplay = document.getElementById("threatStatus");
-  const threatDetailBox = document.getElementById("threatDetails");
+const loadDetailsBtn = document.getElementById("loadDetailsBtn");
+const detailsDropdown = document.getElementById("detailsDropdown");
+const urlDisplay = document.getElementById("checkedUrl");
+const threatTypeDisplay = document.getElementById("threatType");
+const platformDisplay = document.getElementById("platformType");
+const statusDisplay = document.getElementById("threatStatus");
+const threatDetailBox = document.getElementById("threatDetails");
+const labels = document.getElementsByClassName("label");
+document.getElementById('threatStatus').innerHTML = '<span id="errorIcon"></span>Erreur lors du chargement.';
+
 
   loadDetailsBtn.addEventListener("click", function () {
     chrome.runtime.sendMessage({ type: "GET_THREAT_INFO" }, function (response) {
+      console.log("Réponse reçue :", response);
+
+      if( detailsDropdown.style.display === "block" ) {
+        detailsDropdown.style.display = "none";
+        return;
+      }
+
       if (response && response.url) {
         urlDisplay.textContent = response.url;
 
@@ -113,13 +123,19 @@ document.addEventListener("DOMContentLoaded", function () {
           platformDisplay.textContent = response.threatInfo.platformType || "inconnu";
           statusDisplay.textContent = "🚨 Menace détectée !";
           statusDisplay.style.color = "red";
-          threatDetailBox.style.color = "red";
+
+          for( label of labels ) {
+            label.style.color = "red";
+          }
         } else {
           threatTypeDisplay.textContent = "-";
           platformDisplay.textContent = "-";
           statusDisplay.textContent = "✅ Aucun problème détecté.";
           statusDisplay.style.color = "green";
-          threatDetailBox.style.color = "green";
+
+          for( label of labels ) {
+            label.style.color = "green";
+          }
         }
 
         detailsDropdown.style.display = "block";
@@ -128,10 +144,12 @@ document.addEventListener("DOMContentLoaded", function () {
         threatTypeDisplay.textContent = "-";
         platformDisplay.textContent = "-";
         statusDisplay.textContent = "⚠️ Erreur lors du chargement.";
-        statusDisplay.style.color = "orange";
+        statusDisplay.style.color = "#327dd8";
         threatDetailBox.style.color = "#327dd8";
         detailsDropdown.style.display = "block";
       }
+      
     });
   });
 });
+
