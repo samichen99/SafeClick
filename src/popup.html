@@ -33,18 +33,19 @@
     <div id="adBlockCountDisplay">Ads bloquées: 0</div>
 
     <!-- Threat Details Section -->
-    <button id="loadDetailsBtn" class="protect-btn">🔍 Vérifier la menace</button>
-
-    <div id="detailsDropdown" style="display: none;">
-      <div id="threatDetails" style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">
-        <p><strong>URL analysée:</strong> <span id="checkedUrl">-</span></p>
-        <p><strong>Type de menace:</strong> <span id="threatType">-</span></p>
-        <p><strong>Plateforme:</strong> <span id="platformType">-</span></p>
-        <p id="threatStatus" style="font-weight: bold;"></p>
+    <div class="details-section">
+    <button id="loadDetailsBtn">Voir les détails</button>
+    <div id="detailsDropdown" style="display: none; margin-top: 10px;">
+      <div id="threatDetails" class="styled-details">
+        <ul class="details-list">
+          <li><span class="label">• URL analysée:</span> <span id="checkedUrl">-</span></li>
+          <li><span class="label">• Type de menace:</span> <span id="threatType">-</span></li>
+          <li><span class="label">• Plateforme:</span> <span id="platformType">-</span></li>
+        </ul>
+        <p id="threatStatus" class="error-message"></p>
       </div>
     </div>
   </div>
-
   <script src="popup.js"></script>
 </body>
 </html>
