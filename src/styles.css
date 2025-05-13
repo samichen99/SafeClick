@@ -3,15 +3,13 @@ body {
   width: 320px;
   padding: 20px;
   background: linear-gradient(to bottom right, rgb(183, 225, 255), #a1e4fa, #24b6f5);
-  color: #e0f7fa; 
-  box-shadow: none;
+  color: #e0f7fa;
   box-sizing: border-box;
   overflow: hidden;
   animation: fadeIn 0.6s ease-in-out;
   display: flex;
   flex-direction: column;
   gap: 16px;
-  border-radius: 0;
 }
 
 @keyframes fadeIn {
@@ -23,23 +21,29 @@ body {
   display: flex;
   flex-direction: column;
   gap: 16px;
- 
- 
 }
 
 .logo {
   max-width: 130px;
   display: block;
-  margin: 0 auto 20px;
+  margin: 0 auto 10px;
 }
 
 h2 {
   font-size: 15px;
   margin: 0;
   color: #327dd8;
+  text-align: center;
 }
 
-.protect-btn {
+/* ========================= */
+/* ==== Buttons Unified ==== */
+/* ========================= */
+
+button,
+.protect-btn,
+.report-btn,
+#loadDetailsBtn {
   padding: 12px;
   font-size: 14px;
   font-weight: bold;
@@ -49,60 +53,22 @@ h2 {
   color: white;
   cursor: pointer;
   transition: transform 0.3s, box-shadow 0.3s;
+  width: 100%;
 }
 
-.protect-btn:hover {
+button:hover,
+.protect-btn:hover,
+.report-btn:hover,
+#loadDetailsBtn:hover {
   transform: scale(1.05);
   box-shadow: 0 0 10px #00c6ff;
 }
 
-.report-section {
-  display: flex;
-  gap: 8px;
-  align-items: center;
-}
+/* ========================= */
+/* ==== Toggle Section ==== */
+/* ========================= */
 
-input[type="text"] {
-  flex: 1;
-  padding: 8px;
-  font-size: 13px;
-  border-radius: 8px;
-  border: none;
-  background: #f5f5f5;
-  outline: none;
-}
-
-.report-btn {
-  padding: 6px 10px;
-  font-size: 13px;
-  font-weight: bold;
-  background: linear-gradient(to right, #00c6ff, #327dd8);
-  color: white;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
-  transition: transform 0.2s;
-}
-
-.report-btn:hover {
-  transform: scale(1.05);
-  box-shadow: 0 0 8px #1de9b6;
-}
-
-ul {
-  padding-left: 18px;
-  font-size: 13px;
-  color: #e0f2f1;
-  max-height: 100px;
-  overflow-y: auto;
-}
-
-ul li {
-  margin-bottom: 4px;
-  animation: fadeIn 0.5s ease;
-}
 .toggle-container {
-  margin-top: 20px;
   display: flex;
   justify-content: center;
 }
@@ -164,6 +130,11 @@ input:checked + .slider {
 input:checked + .slider:before {
   transform: translateX(18px);
 }
+
+/* ========================= */
+/* === Counter Display ==== */
+/* ========================= */
+
 #adBlockCountDisplay {
   margin-top: 12px;
   padding: 10px 15px;
@@ -180,4 +151,23 @@ input:checked + .slider:before {
 #adBlockCountDisplay:hover {
   transform: scale(1.03);
   box-shadow: 0 6px 14px rgba(0, 126, 230, 0.4);
+}
+
+/* ========================= */
+/* ==== Threat Section ===== */
+/* ========================= */
+
+#detailsDropdown {
+  display: none;
+  background-color: rgba(255, 255, 255, 0.1);
+  padding: 12px;
+  border-radius: 10px;
+  font-size: 13px;
+  color: white;
+  line-height: 1.5;
+}
+
+#detailsDropdown span {
+  font-weight: bold;
+  color: #ffffff;
 }
