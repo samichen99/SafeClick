@@ -3,39 +3,39 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Safe-Click</title>
+  <title>Safe Click</title>
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
-  
-    <div class="popup-container">
-      <img src="Logo.png" alt="Safe-click Logo" class="logo" />
-      <button class="protect-btn">Activer la protection</button>
-  
-      <h2>Sites bloqués</h2>
-      <div class="report-section">
-        <input type="text" placeholder="Signaler un site..." />
-        <button class="report-btn">Signaler</button>
-      </div>
-      
-      <ul id="blockedSites">
-      
-      </ul>
-      <div class="toggle-container">
-        <label class="switch-label">Bloqueur de publicités
-          <label class="switch">
-            <input type="checkbox" id="toggleAdBlock">
-            <span class="slider round"></span>
-          </label>
+  <div class="popup-container">
+    <img src="Logo.png" class="logo" alt="Safe Click Logo" />
+
+    <!-- Protection Toggle -->
+    <button class="protect-btn" id="protectionToggleBtn">Activer la protection</button>
+
+    <!-- Report Button -->
+    <div class="report-section">
+      <p style="margin: 0; font-size: 13px; color: #555;">Cliquez sur "Signaler" pour envoyer l'URL actuelle.</p>
+      <button id="report-btn" class="report-btn">Signaler</button>
+    </div>
+
+    <!-- Adblock toggle -->
+    <div class="toggle-container">
+      <label class="switch-label">Bloqueur de publicités
+        <label class="switch">
+          <input type="checkbox" id="toggleAdBlock" />
+          <span class="slider round"></span>
         </label>
-      </div>
-      <div id="adBlockCountDisplay">Ads bloquées: 0</div>
-    </div> 
-    
-   <!-- Details Button-->  
-  <div class="details-section">
-    <button id="loadDetailsBtn">Voir les détails</button>
-    <div id="detailsDropdown" style="display: none; margin-top: 10px;">
+      </label>
+    </div>
+
+    <!-- Adblock counter -->
+    <div id="adBlockCountDisplay">Ads bloquées: 0</div>
+
+    <!-- Threat Details Section -->
+    <button id="loadDetailsBtn" class="protect-btn">🔍 Vérifier la menace</button>
+
+    <div id="detailsDropdown" style="display: none;">
       <div id="threatDetails" style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">
         <p><strong>URL analysée:</strong> <span id="checkedUrl">-</span></p>
         <p><strong>Type de menace:</strong> <span id="threatType">-</span></p>
@@ -45,7 +45,6 @@
     </div>
   </div>
 
-  <script src="popup.js"></script> 
-
+  <script src="popup.js"></script>
 </body>
 </html>
