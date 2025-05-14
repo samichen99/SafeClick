@@ -248,11 +248,6 @@ input:checked + .slider:before {
   align-items: center;
 }
 
-.error-message::before {
-  content: "⚠️ ";
-  margin-right: 6px;
-}
-
 #checkedUrl, #threatType, #platformType {
   white-space: nowrap;
   overflow: hidden;
