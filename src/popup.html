@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -11,15 +11,17 @@
     <img src="Logo.png" class="logo" alt="Safe Click Logo" />
 
     <!-- Protection Toggle -->
-    <button class="protect-btn" id="protectionToggleBtn">Activer la protection</button>
+    <button class="protect-btn" id="protectionToggleBtn">Enable Protection</button>
 
     <!-- Report Button -->
-    <h2>Cliquez sur "Signaler" pour envoyer l'URL actuelle.</h2>
-    <button id="report-btn" class="report-btn">Signaler</button>
+    
+      <h2>Click "Report" to send the current URL.</h2>
+      <button id="report-btn" class="report-btn">Report</button>
+    
 
     <!-- Adblock toggle -->
     <div class="toggle-container">
-      <label class="switch-label">Bloqueur de publicités
+      <label class="switch-label">Ad Blocker
         <label class="switch">
           <input type="checkbox" id="toggleAdBlock" />
           <span class="slider round"></span>
@@ -28,22 +30,27 @@
     </div>
 
     <!-- Adblock counter -->
-    <div id="adBlockCountDisplay">Ads bloquées: 0</div>
+    <div id="adBlockCountDisplay">Ads blocked: 0</div>
 
-    <!-- Threat Details Section -->
-    <div class="details-section">
-    <button id="loadDetailsBtn">Voir les détails</button>
-    <div id="detailsDropdown" style="display: none; margin-top: 10px;">
-      <div id="threatDetails" class="styled-details">
-        <ul class="details-list">
-          <li><span class="label">• URL analysée:</span> <span id="checkedUrl">-</span></li>
-          <li><span class="label">• Type de menace:</span> <span id="threatType">-</span></li>
-          <li><span class="label">• Plateforme:</span> <span id="platformType">-</span></li>
-        </ul>
-        <p id="threatStatus" class="error-message"></p>
+    <!-- Threat Details -->
+   <div class="details-section">
+  <button id="loadDetailsBtn">View Details</button>
+  <div id="detailsDropdown" style="display: none; margin-top: 10px;">
+    <div id="threatDetails" class="styled-details">
+      <ul class="details-list">
+        <li><span class="label">• Scanned URL:</span> <span id="checkedUrl">-</span></li>
+        <li><span class="label">• Threat Type:</span> <span id="threatType">-</span></li>
+        <li><span class="label">• Platform:</span> <span id="platformType">-</span></li>
+      </ul>
+      <p id="threatStatus" class="error-message"></p>
+    </div>
+  </div>
+</div>
+
       </div>
     </div>
   </div>
+
   <script src="popup.js"></script>
 </body>
 </html>
