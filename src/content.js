@@ -75,7 +75,7 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
             <h1>Website Blocked</h1>
             <p>This website has been identified as potentially harmful (phishing or malicious). For your safety, access has been blocked by SAFE CLICK</p>
             <img src=></img>
-            <button id="goBack">🔙 Go Back to Safety</button>
+            <button id="goBack">Go Back to Safety</button>
           </div>
   
           <script>
