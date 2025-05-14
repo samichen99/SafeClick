@@ -5,24 +5,24 @@ document.addEventListener("DOMContentLoaded", function () {
   const adCountDisplay = document.getElementById("adBlockCountDisplay");
 
   // Initialize counter display
-  adCountDisplay.textContent = "Ads bloquées: 0";
+  adCountDisplay.textContent = "Ads blocked: 0";
 
   // === Protection button state ===
   chrome.storage.local.get(["adBlockEnabled"], function (data) {
     const enabled = data.adBlockEnabled || false;
     adBlockToggle.checked = enabled;
-    protectBtn.textContent = enabled ? "Protection active ✅" : "Activer la protection";
+    protectBtn.textContent = enabled ? "Protection active ✅" : "Activate Protection";
     protectBtn.style.background = enabled ? "#00c853" : 'linear-gradient(to right, #00c6ff, #327dd8)';
     protectBtn.style.cursor = enabled ? "default" : "pointer";
   });
 
-  // === Toggle protection button===
+  // === Toggle protection button ===
   protectBtn.addEventListener("click", function () {
     const isActive = protectBtn.textContent === "Protection active ✅";
     const newState = !isActive;
 
     adBlockToggle.checked = newState;
-    protectBtn.textContent = newState ? "Protection active ✅" : "Activer la protection";
+    protectBtn.textContent = newState ? "Protection active ✅" : "Activate Protection";
     protectBtn.style.background = newState ? "#00c853" : 'linear-gradient(to right, #00c6ff, #327dd8)';
     protectBtn.style.cursor = newState ? "default" : "pointer";
 
@@ -30,21 +30,20 @@ document.addEventListener("DOMContentLoaded", function () {
     chrome.runtime.sendMessage({ type: "TOGGLE_ADBLOCK", enabled: newState });
   });
 
-  // === Toggle protection switch===
+  // === Toggle protection switch ===
   adBlockToggle.addEventListener("change", function () {
     const enabled = adBlockToggle.checked;
     chrome.storage.local.set({ adBlockEnabled: enabled });
     chrome.runtime.sendMessage({ type: "TOGGLE_ADBLOCK", enabled });
 
-    protectBtn.textContent = enabled ? "Protection active ✅" : "Activer la protection";
+    protectBtn.textContent = enabled ? "Protection active ✅" : "Activate Protection";
     protectBtn.style.background = enabled ? "#00c853" : 'linear-gradient(to right, #00c6ff, #327dd8)';
     protectBtn.style.cursor = enabled ? "default" : "pointer";
   });
 
   // === Update ad counter ===
-
   function updateCounterDisplay(count) {
-    adCountDisplay.textContent = `Ads bloquées: ${count}`;
+    adCountDisplay.textContent = `Ads blocked: ${count}`;
     adCountDisplay.classList.add('counter-update');
     setTimeout(() => {
       adCountDisplay.classList.remove('counter-update');
@@ -95,22 +94,21 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // === Threat detail ===
 
-const loadDetailsBtn = document.getElementById("loadDetailsBtn");
-const detailsDropdown = document.getElementById("detailsDropdown");
-const urlDisplay = document.getElementById("checkedUrl");
-const threatTypeDisplay = document.getElementById("threatType");
-const platformDisplay = document.getElementById("platformType");
-const statusDisplay = document.getElementById("threatStatus");
-const threatDetailBox = document.getElementById("threatDetails");
-const labels = document.getElementsByClassName("label");
-document.getElementById('threatStatus').innerHTML = '<span id="errorIcon"></span>Erreur lors du chargement.';
-
+  const loadDetailsBtn = document.getElementById("loadDetailsBtn");
+  const detailsDropdown = document.getElementById("detailsDropdown");
+  const urlDisplay = document.getElementById("checkedUrl");
+  const threatTypeDisplay = document.getElementById("threatType");
+  const platformDisplay = document.getElementById("platformType");
+  const statusDisplay = document.getElementById("threatStatus");
+  const threatDetailBox = document.getElementById("threatDetails");
+  const labels = document.getElementsByClassName("label");
+  document.getElementById('threatStatus').innerHTML = '<span id="errorIcon"></span>Error while loading.';
 
   loadDetailsBtn.addEventListener("click", function () {
     chrome.runtime.sendMessage({ type: "GET_THREAT_INFO" }, function (response) {
-      console.log("Réponse reçue :", response);
+      console.log("Response received:", response);
 
-      if( detailsDropdown.style.display === "block" ) {
+      if (detailsDropdown.style.display === "block") {
         detailsDropdown.style.display = "none";
         return;
       }
@@ -119,21 +117,21 @@ document.getElementById('threatStatus').innerHTML = '<span id="errorIcon"></span
         urlDisplay.textContent = response.url;
 
         if (response.threatInfo) {
-          threatTypeDisplay.textContent = response.threatInfo.threatType || "inconnu";
-          platformDisplay.textContent = response.threatInfo.platformType || "inconnu";
-          statusDisplay.textContent = "🚨 Menace détectée !";
+          threatTypeDisplay.textContent = response.threatInfo.threatType || "unknown";
+          platformDisplay.textContent = response.threatInfo.platformType || "unknown";
+          statusDisplay.textContent = "🚨 Threat detected!";
           statusDisplay.style.color = "red";
 
-          for( label of labels ) {
+          for (label of labels) {
             label.style.color = "red";
           }
         } else {
           threatTypeDisplay.textContent = "-";
           platformDisplay.textContent = "-";
-          statusDisplay.textContent = "✅ Aucun problème détecté.";
+          statusDisplay.textContent = "✅ No threat detected.";
           statusDisplay.style.color = "green";
 
-          for( label of labels ) {
+          for (label of labels) {
             label.style.color = "green";
           }
         }
@@ -143,13 +141,12 @@ document.getElementById('threatStatus').innerHTML = '<span id="errorIcon"></span
         urlDisplay.textContent = "-";
         threatTypeDisplay.textContent = "-";
         platformDisplay.textContent = "-";
-        statusDisplay.textContent = "⚠️ Erreur lors du chargement.";
+        statusDisplay.textContent = "⚠️ Error while loading.";
         statusDisplay.style.color = "#327dd8";
         threatDetailBox.style.color = "#327dd8";
         detailsDropdown.style.display = "block";
       }
-      
+
     });
   });
 });
-
